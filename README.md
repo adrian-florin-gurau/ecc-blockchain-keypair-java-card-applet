@@ -14,7 +14,8 @@ The project contains:
 ```text
 src/applet/   Java Card applet
 src/host/     Standalone Java host application
-scripts/      Build, run, and ZIP packaging scripts
+scripts/      PowerShell build, run, and ZIP packaging scripts
+scripts-sh/   Bash equivalents for Git Bash/MSYS/Linux-style shells
 docs/         APDU protocol and assignment notes
 ```
 
@@ -24,6 +25,12 @@ Mock mode is useful when the Oracle Java Card simulator or a physical card is no
 
 ```powershell
 .\scripts\run-mock.ps1
+```
+
+Bash equivalent:
+
+```bash
+./scripts-sh/run-mock.sh
 ```
 
 Expected output includes:
@@ -40,13 +47,26 @@ Expected output includes:
 .\scripts\build.ps1
 ```
 
+Bash equivalent:
+
+```bash
+./scripts-sh/build.sh
+```
+
 ## Compile applet source
 
 Install the Oracle Java Card 3.2 SDK or an equivalent Java Card SDK and set `JAVACARD_HOME` to its root directory:
 
 ```powershell
-$env:JAVACARD_HOME = "C:\path\to\java_card_sdk-3_2_0"
+.\scripts\set-java-card-env.ps1
 .\scripts\build.ps1 -Applet
+```
+
+Bash equivalent:
+
+```bash
+source ./scripts-sh/set-java-card-env.sh
+./scripts-sh/build.sh --applet
 ```
 
 The script looks for `api_classic*.jar` under `JAVACARD_HOME` and compiles the applet classes. CAP conversion/loading is simulator-vendor-specific, so the APDU protocol is documented separately in `docs\APDU_PROTOCOL.md`.
@@ -59,18 +79,36 @@ Load/install the applet with AID `F0010203040506`, then run:
 .\scripts\run-card.ps1
 ```
 
+Bash equivalent:
+
+```bash
+./scripts-sh/run-card.sh
+```
+
 You can also pass a custom transaction string:
 
 ```powershell
 .\scripts\run-card.ps1 -Transaction "ethereum:to=0x001122;value=1;nonce=7"
 ```
 
-For Oracle Java Card simulator setup on Windows, see `docs\SIMULATOR_SETUP.md`.
+Bash equivalent:
+
+```bash
+./scripts-sh/run-card.sh "ethereum:to=0x001122;value=1;nonce=7"
+```
+
+For Oracle Java Card simulator setup on Windows, including PowerShell and Bash commands, see `docs\SIMULATOR_SETUP.md`.
 
 ## Package for Moodle/Sakai
 
 ```powershell
 .\scripts\package-assignment.ps1 -LastName POPESCU -FirstName ION
+```
+
+Bash equivalent:
+
+```bash
+./scripts-sh/package-assignment.sh POPESCU ION
 ```
 
 This creates:

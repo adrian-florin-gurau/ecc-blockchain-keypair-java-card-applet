@@ -22,6 +22,7 @@ New-Item -ItemType Directory -Force $Stage | Out-Null
 Copy-Item -Path (Join-Path $Root "README.md") -Destination $Stage
 Copy-Item -Path (Join-Path $Root "src") -Destination $Stage -Recurse
 Copy-Item -Path (Join-Path $Root "scripts") -Destination $Stage -Recurse
+Copy-Item -Path (Join-Path $Root "scripts-sh") -Destination $Stage -Recurse
 Copy-Item -Path (Join-Path $Root "docs") -Destination $Stage -Recurse
 
 if (Test-Path $ZipPath) {

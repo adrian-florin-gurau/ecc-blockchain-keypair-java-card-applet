@@ -4,6 +4,7 @@ This project can run in three modes:
 
 - `run-mock.ps1`: local Java cryptographic mock, no Java Card SDK needed.
 - `run-card.ps1`: PC/SC smart-card connection, physical or simulated.
+- `scripts-sh/*.sh`: Bash equivalents for Git Bash/MSYS/Linux-style shells.
 - Oracle Java Card simulator: official Java Card 3.2 runtime simulator exposed through PC/SC.
 
 ## 1. Download the SDK components
@@ -26,7 +27,13 @@ C:\JavaCard\tools
 C:\JavaCard\simulator
 ```
 
-Then set environment variables:
+Then set environment variables. This project includes a helper with Adrian's current local paths:
+
+```powershell
+.\scripts\set-java-card-env.ps1
+```
+
+Or set them manually:
 
 ```powershell
 $env:JC_HOME_TOOLS = "C:\JavaCard\tools"
@@ -43,6 +50,22 @@ For permanent user variables:
 ```
 
 Open a new PowerShell window after setting permanent variables.
+
+For Bash/Git Bash, use the helper with `source` so the variables stay in the current shell. Running it as `./scripts-sh/set-java-card-env.sh` prints the values but cannot update the parent shell:
+
+```bash
+source ./scripts-sh/set-java-card-env.sh
+```
+
+Or export manually:
+
+```bash
+export JAVA_HOME="/c/Program Files/Java/jdk-17"
+export PATH="$JAVA_HOME/bin:$PATH"
+export JC_HOME_TOOLS="/c/Users/adrian/Desktop/java_card_devkit_tools-bin-v26.0-b_705-04-MAY-2026"
+export JAVACARD_HOME="$JC_HOME_TOOLS"
+export JC_HOME_SIMULATOR="/c/Users/adrian/Desktop/java_card_devkit_simulator-win-bin-v26.0-b_788-05-MAY-2026"
+```
 
 ## 2. Install the Oracle PC/SC simulated reader
 
@@ -70,6 +93,12 @@ Before the first run, configure demo SCP03 keys in the simulator binary. Stop th
 powershell -ExecutionPolicy Bypass -File .\scripts\configure-oracle-simulator.ps1
 ```
 
+Bash equivalent:
+
+```bash
+./scripts-sh/configure-oracle-simulator.sh
+```
+
 This project uses key version number `01` with zero SCP03 keys for a local academic simulator only. Do not use these keys for a real card.
 
 In a normal PowerShell window:
@@ -78,12 +107,24 @@ In a normal PowerShell window:
 powershell -ExecutionPolicy Bypass -File .\scripts\start-oracle-simulator.ps1
 ```
 
+Bash equivalent:
+
+```bash
+./scripts-sh/start-oracle-simulator.sh
+```
+
 Keep that window open.
 
 ## 4. Compile the applet
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\build.ps1 -Applet
+```
+
+Bash equivalent:
+
+```bash
+./scripts-sh/build.sh --applet
 ```
 
 This validates the applet source against the Java Card API jar.
@@ -110,12 +151,24 @@ For this project, the helper below builds, converts, deploys, and runs a signing
 powershell -ExecutionPolicy Bypass -File .\scripts\run-oracle-simulator.ps1
 ```
 
+Bash equivalent:
+
+```bash
+./scripts-sh/run-oracle-simulator.sh
+```
+
 ## 6. Test through PC/SC
 
 Once the applet is installed and the simulator is still running:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\run-card.ps1
+```
+
+Bash equivalent:
+
+```bash
+./scripts-sh/run-card.sh
 ```
 
 If `run-card.ps1` still says no PC/SC terminal was found, the simulated reader was not installed or the PowerShell session needs to be restarted.
